@@ -65,3 +65,15 @@ columns: telegramID (pk), station name they are queing for
 each row represents a person
 
 columns: queue number (pk, unique), telegramID, hasleft (boolean, default false)
+
+#.env
+BOT_TOKEN=  
+BOT_NAME=  
+API_URL=https://api.telegram.org/bot  
+SERVER_URL=  
+DATABASE_URL=  
+DB_DATABASE=  
+DB_HOST=  
+DB_PASSWORD=  
+DB_USER=  
+DEBUG=  
