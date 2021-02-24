@@ -5,6 +5,7 @@ module.exports.api_url = process.env.API_URL + module.exports.token + '/'
 // module.exports.secret_url = process.env.SERVER_URL+process.env.BOT_TOKEN
 module.exports.bot_name = process.env.BOT_NAME
 module.exports.debug = JSON.parse(process.env.DEBUG)
+module.exports.admins = JSON.parse(process.env.ADMINS) //array of user id
 
 //testing for heroku env variables
 // console.log("token: ", module.exports.token);
@@ -46,5 +47,6 @@ https://artspaces.kunstmatrix.com/en/exhibition/4729407/catalog
 https://artspaces.kunstmatrix.com/en/exhibition/4729407/intelligence-expo-2021\n\n`;
 
 module.exports.superusers = [653601805] //array of user id
+
 
 module.exports.waitTimeMessage = `The current waiting time is %s minutes`

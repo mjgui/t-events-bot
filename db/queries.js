@@ -1,7 +1,7 @@
 const db = require('./db');
 // const assert = require("assert");
 const messenger = require('../messenger');
-const {waitTimeMessage} = require("../config");
+const {admins, waitTimeMessage, superusers} = require("../config");
 const sprintf = require("sprintf-js").sprintf;
 let bot;
 
@@ -261,8 +261,22 @@ module.exports.getMasterVariable = async function (key){ //returns string
     return res.rows[0].value;
 }
 
+module.exports.setMasterVariable = async function (key, value) {
+    const statement = `
+            update master.variables
+            set "value" = $2
+            where "key" = $1`;
+    const args = [key, value];
+    const res =  await db.query(statement, args);
+    return res
+}
+
 module.exports.getWaitTime = async function (){ //returns wait time in minutes as a string
     return await module.exports.getMasterVariable("waitTime");
+}
+
+module.exports.setWaitTime = async function (newTime){ //returns wait time in minutes as a string
+    return await module.exports.setMasterVariable("waitTime", newTime);
 }
 
 module.exports.getWaitTimeMessage = async function (){
@@ -280,6 +294,24 @@ module.exports.getWaitInfo = async function (stationID, userID) {
         "\n\nThere are " + (queueLengthAhead) + " participants ahead of you." +
         "\n\nThe expected waiting time is " + (queueLengthAhead * timePer) + " minutes.";
     return text;
+}
+
+/**
+ *
+ * @param chatId int
+ * @returns boolean
+ */
+module.exports.isSuperuser = function (chatId) {
+    return superusers.includes(chatId);
+}
+
+/**
+ *
+ * @param chatId int
+ * @returns boolean
+ */
+module.exports.isAdmin = function (chatId) {
+    return admins.includes(chatId) || isSuperuser(chatId);
 }
 
 module.exports.getAdminStationID = async function (groupId) {
