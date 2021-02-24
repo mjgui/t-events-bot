@@ -11,7 +11,15 @@ admins can set waiting time
 ## add global list of admins
 no longer by station/timeslot
 stored in .env
+## change max to global
+max queue length per slot
 
 # potential modifications
 ## change max to global
+use this variable to check when enqueueing
 ## remove station-based admins
+## changing timeslots to stations
+enable /timeslots as an alias of /stations
+hide expired timeslots
+## /ticket
+prints out a message stating student's timeslot and username
