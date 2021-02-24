@@ -71,7 +71,6 @@ bot.on('message', (msg) => {
             leaveQueue.init(msg);
             break;
         case '/waittime':
-        case '/myqueue':
             waitTime.init(msg);
             break;
         //for stationmasters:

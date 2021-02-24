@@ -46,3 +46,5 @@ https://artspaces.kunstmatrix.com/en/exhibition/4729407/catalog
 https://artspaces.kunstmatrix.com/en/exhibition/4729407/intelligence-expo-2021\n\n`;
 
 module.exports.superusers = [653601805] //array of user id
+
+module.exports.waitTimeMessage = `The current waiting time is %s minutes`

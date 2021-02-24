@@ -1,7 +1,8 @@
 const db = require('./db');
 // const assert = require("assert");
 const messenger = require('../messenger');
-// const sprintf = require("sprintf-js").sprintf;
+const {waitTimeMessage} = require("../config");
+const sprintf = require("sprintf-js").sprintf;
 let bot;
 
 module.exports.initbot = function (b) {
@@ -240,6 +241,34 @@ module.exports.leaveQueue = async function (userId) {
         console.log(e);
         return false;
     }
+}
+
+module.exports.getMasterVariable = async function (key){ //returns string
+    const statement = `
+            select "value" from master.variables
+            where "key" = $1;`;
+    const args = [key];
+    const res = await db.query(statement, args);
+
+    if(res.rowCount === 0){
+        console.error("Error: master variable " + key + " not found");
+        throw new Error("master variable " + key + " not found")
+    }
+    if(res.rowCount > 1){
+        console.error("Error: master variable " + key + " matches multiple rows");
+        throw new Error("master variable " + key + " matches multiple rows")
+    }
+    return res.rows[0].value;
+}
+
+module.exports.getWaitTime = async function (){ //returns wait time in minutes as a string
+    return await module.exports.getMasterVariable("waitTime");
+}
+
+module.exports.getWaitTimeMessage = async function (){
+    const waitTime = await module.exports.getWaitTime();
+    const msg = sprintf(waitTimeMessage, waitTime);
+    return msg;
 }
 
 module.exports.getWaitInfo = async function (stationID, userID) {
