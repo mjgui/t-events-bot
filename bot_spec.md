@@ -19,7 +19,7 @@ success message says the number of persons ahead and expected waiting time
 confirmation dialogue
 
 ### /waitTime
-get number of participants ahead of them in the queue, and expected waiting time (also mention which station they're queueing for)
+get expected waiting time for a new participant
 
 ## for station masters:
 these commands can only be used in an authorized group chat (corresponding to a station)
@@ -54,7 +54,7 @@ send a message to everyone in the queue
 ## variables table
 each row represents a variable name and its value(stringified)  
 columns: name(pk), value  
-rows: wait time
+rows: wait time, max length per slot
 
 ## stations table
 each row represents a station
@@ -82,3 +82,4 @@ DB_HOST=
 DB_PASSWORD=  
 DB_USER=  
 DEBUG=  
+ADMINS=
