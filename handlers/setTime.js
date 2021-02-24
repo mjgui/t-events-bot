@@ -1,7 +1,6 @@
 const queries = require('../db/queries');
 const messenger = require('../messenger');
 
-// for admins in group chat to get the length of their queue
 module.exports.init = async function (msg) {
     const isAdmin = queries.isAdmin(msg.chat.id);
     if (!isAdmin) {

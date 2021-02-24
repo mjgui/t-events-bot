@@ -1,32 +1,28 @@
 const queries = require('../db/queries');
 const messenger = require('../messenger');
 
-// for admins in group chat to get the length of their queue
 module.exports.init = async function (msg) {
-    if (msg.from.id === msg.chat.id) {
-        const text = "This command can only be used in an authorized group chat.";
-        messenger.send(msg.chat.id, text);
-        return;
-    }
-    const station = await queries.getAdminStationID(msg.chat.id);
-    if (station === null) {
-        const text = "Error, unable to find linked station";
+    const isAdmin = queries.isAdmin(msg.chat.id);
+    if (!isAdmin) {
+        const text = "Error, you are unauthorized";
         messenger.send(msg.chat.id, text);
     } else {
-        let num;
+        let newTime;
         try{
-            num = parseInt(msg.text.split(" ")[1]);
-            if(!Number.isInteger(num)) throw "not a valid number";
+            newTime = parseInt(msg.text.split(" ")[1]);
         } catch (e) {
-            const text = "Error, invalid input. This command is used to update the max queue length." +
+            const text = "Error, invalid input. This command is used to update the max queue length per slot." +
                 "If it has been reached, participants will not be able to join the queue." +
                 "\nExample format:\n" +
                 "/setmax 10";
             messenger.send(msg.chat.id, text);
             return;
         }
-        queries.setMax(station, num);
-        const text = "Successfully updated the max queue length.";
+        if(!Number.isInteger(newTime)) {
+            throw "not a valid integer";
+        }
+        await queries.setWaitTime(newTime);
+        const text = "Successfully updated the max queue length per slot.";
         messenger.send(msg.chat.id, text);
     }
 }

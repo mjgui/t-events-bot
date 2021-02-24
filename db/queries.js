@@ -275,16 +275,21 @@ module.exports.getWaitTime = async function (){ //returns wait time in minutes a
     return await module.exports.getMasterVariable("waitTime");
 }
 
-module.exports.setWaitTime = async function (newTime){ //returns wait time in minutes as a string
-    return await module.exports.setMasterVariable("waitTime", newTime);
-}
-
 module.exports.getWaitTimeMessage = async function (){
     const waitTime = await module.exports.getWaitTime();
     const msg = sprintf(waitTimeMessage, waitTime);
     return msg;
 }
 
+module.exports.setWaitTime = async function (newTime){ //returns wait time in minutes as a string
+    return await module.exports.setMasterVariable("waitTime", newTime);
+}
+
+module.exports.setMaxQueueLength = async function (newTime){ //returns wait time in minutes as a string
+    return await module.exports.setMasterVariable("maxLength", newTime);
+}
+
+//TODO: remove
 module.exports.getWaitInfo = async function (stationID, userID) {
     //get wait info for user in a queue
     const timePer = await module.exports.getTimeEach(stationID);
