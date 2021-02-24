@@ -51,7 +51,12 @@ send a message to everyone in the queue
 
 
 # database:
-## master table
+## variables table
+each row represents a variable name and its value(stringified)  
+columns: name(pk), value  
+rows: wait time
+
+## stations table
 each row represents a station
 
 columns: station name (pk), groupID (group with the stationmasters), time per person, tablename (for queue, or use stationname), queue length, current queue number, ping text (to be sent to front participant)
@@ -59,12 +64,12 @@ columns: station name (pk), groupID (group with the stationmasters), time per pe
 ## table of participants
 stores the queue they are in
 
-columns: telegramID (pk), station name they are queing for
+columns: telegramID (pk), station name they are queueing for
 
 ## table representing a station's queue
 each row represents a person
 
-columns: queue number (pk, unique), telegramID, hasleft (boolean, default false)
+columns: queue number (pk, unique), telegramID, hasLeft (boolean, default false)
 
 #.env
 BOT_TOKEN=  
