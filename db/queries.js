@@ -295,18 +295,6 @@ module.exports.getMaxQueueLengthInt = async function () {
     return value;
 }
 
-//TODO: remove
-module.exports.getWaitInfo = async function (stationID, userID) {
-    //get wait info for user in a queue
-    const timePer = await module.exports.getTimeEach(stationID);
-    const queueLengthAhead = await getQueueLengthAhead(stationID, userID);
-    const stationName = await module.exports.getStationName(stationID);
-    const text = "You're in the queue for: " + stationName +
-        "\n\nThere are " + (queueLengthAhead) + " participants ahead of you." +
-        "\n\nThe expected waiting time is " + (queueLengthAhead * timePer) + " minutes.";
-    return text;
-}
-
 /**
  *
  * @param chatId int

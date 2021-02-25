@@ -2,8 +2,9 @@ const queries = require('../db/queries');
 const {InlineKeyboard} = require('node-telegram-keyboard-wrapper');
 const messenger = require('../messenger');
 const  {bot_name} = require('../config');
+const sprintf = require("sprintf-js").sprintf;
 
-const alreadyQueuedMsg = "Error: you're already in a queue!\n\n";
+const alreadyQueuedMsg = "Error: you're already in a queue for %s. You may use /leavequeue to leave the current queue.";
 
 module.exports.init = async function (msg) {
     if (msg.from.id !== msg.chat.id) {
@@ -14,7 +15,9 @@ module.exports.init = async function (msg) {
     try {
         const currStationID = await queries.getUserStationID(msg.from.id);
         if (currStationID !== null) {
-            messenger.send(msg.from.id, alreadyQueuedMsg + await queries.getWaitInfo(currStationID, msg.from.id) + "\n\nYou may use /leavequeue to leave the current queue.");
+            const stationName = await queries.getStationName(currStationID);
+            const str = sprintf(alreadyQueuedMsg, stationName)
+            messenger.send(msg.from.id, str);
             return;
         }
         if(currStationID === "0") {
@@ -41,21 +44,23 @@ module.exports.init = async function (msg) {
 
 module.exports.callback = async function (query) {
     try {
-        const currStation = await queries.getUserStationID(query.from.id);
-        if (currStation !== null) {
+        const currStationId = await queries.getUserStationID(query.from.id);
+        if (currStationId !== null) {
+            const stationName = await queries.getStationName(currStationId);
+            const str = sprintf(alreadyQueuedMsg, stationName)
             messenger.edit(
                 query.message.chat.id,
                 query.message.message_id,
                 null,
-                alreadyQueuedMsg + await queries.getWaitInfo(currStation, query.from.id),
+                str,
                 null);
             return;
         }
         const data = JSON.parse(query.data);
         const stationID = data.s;
-        const stationName = queries.getStationName(stationID)
+        const stationName = await queries.getStationName(stationID);
         const queueLength = await queries.getQueueLength(stationID);
-        const maxQueueLength = await queries.getMaxQueueLength(stationID);
+        const maxQueueLength = await queries.getMaxQueueLengthInt(stationID);
         if (maxQueueLength !== null && queueLength >= maxQueueLength) {
             messenger.edit(
                 query.message.chat.id,
@@ -71,16 +76,8 @@ module.exports.callback = async function (query) {
                     query.message.chat.id,
                     query.message.message_id,
                     null,
-                    "Successfully added to queue\n\n" + await queries.getWaitInfo(stationID, query.from.id),
+                    `Successfully added to queue for ${stationName}`,
                     null);
-                if(initialQueueLength === 0){
-                    if(await queries.getQueueLength(stationID) > 0){
-                        //notify group that a participant has joined the empty queue
-                        const groupID = await queries.getGroupId(stationID);
-                        const text = "A participant has joined the empty queue.\n" + await queries.frontText(groupID);
-                        messenger.send(groupID, text);
-                    }
-                }
             } catch (e) {
                 messenger.edit(
                     query.message.chat.id,
