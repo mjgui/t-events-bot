@@ -3,9 +3,10 @@ const {about, bot_name, debug, help, start, token} = require('./config');
 const messenger = require('./messenger');
 // const queries = require('./db/queries');
 const viewStations = require('./handlers/viewStations');
-const joinQueue = require('./handlers/joinQueue');
 const waitTime = require('./handlers/waitTime');
+const joinQueue = require('./handlers/joinQueue');
 const leaveQueue = require('./handlers/leaveQueue');
+const getTicket = require('./handlers/getTicket');
 
 const setMax = require('./handlers/setMax');
 const setTime = require('./handlers/setTime');
@@ -59,6 +60,9 @@ bot.on('message', (msg) => {
             messenger.send(msg.chat.id, start + "\n" + about);
             break;
         //for participants:
+        case '/waittime':
+            waitTime.init(msg);
+            break;
         case '/viewstations':
         case '/stations':
         case '/timeslots':
@@ -66,13 +70,12 @@ bot.on('message', (msg) => {
             break;
         case '/joinqueue':
             joinQueue.init(msg);
-            //TODO: message admin group when someone joins an empty queue
             break;
         case '/leavequeue':
             leaveQueue.init(msg);
             break;
-        case '/waittime':
-            waitTime.init(msg);
+        case '/ticket':
+            getTicket.init(msg);
             break;
         //for stationmasters:
         case '/setmax':
