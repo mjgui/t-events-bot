@@ -285,8 +285,8 @@ module.exports.setWaitTime = async function (newTime){ //returns wait time in mi
     return await module.exports.setMasterVariable("waitTime", newTime);
 }
 
-module.exports.setMaxQueueLength = async function (newTime){ //returns wait time in minutes as a string
-    return await module.exports.setMasterVariable("maxLength", newTime);
+module.exports.setMaxQueueLength = async function (newLength) {
+    return await module.exports.setMasterVariable("maxLength", newLength);
 }
 
 //TODO: remove

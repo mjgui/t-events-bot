@@ -7,9 +7,9 @@ module.exports.init = async function (msg) {
         const text = "Error, you are unauthorized";
         messenger.send(msg.chat.id, text);
     } else {
-        let newTime;
+        let newLength;
         try{
-            newTime = parseInt(msg.text.split(" ")[1]);
+            newLength = parseInt(msg.text.split(" ")[1]);
         } catch (e) {
             const text = "Error, invalid input. This command is used to update the max queue length per slot." +
                 "If it has been reached, participants will not be able to join the queue." +
@@ -18,10 +18,10 @@ module.exports.init = async function (msg) {
             messenger.send(msg.chat.id, text);
             return;
         }
-        if(!Number.isInteger(newTime)) {
+        if(!Number.isInteger(newLength)) {
             throw "not a valid integer";
         }
-        await queries.setWaitTime(newTime);
+        await queries.setMaxQueueLength(newLength);
         const text = "Successfully updated the max queue length per slot.";
         messenger.send(msg.chat.id, text);
     }
