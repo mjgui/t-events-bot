@@ -19,13 +19,15 @@ use this variable to check when enqueueing
 enable /timeslots as an alias of /stations
 ##adapt commands without changing spec
 leavequeue  
-joinqueue  
+joinqueue
+## /ticket
+prints out a message stating student's timeslot and username
 
 # potential modifications
 ## change max to global
 in joinqueue, only show options that are not full
 ## changing stations to timeslots
 hide expired timeslots
-## /ticket
-prints out a message stating student's timeslot and username
 ## queueinfo
+show all timeslots and participants in them
+## remove getfront, pingfront, queueinfo
