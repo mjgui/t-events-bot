@@ -19,12 +19,12 @@ module.exports.init = async function(msg){
     //for each station get queue length
     const stationNamePromises = stationIDs.map(st => queries.getStationName(st));
     const queueLengthPromises = stationIDs.map(st => queries.getQueueLength(st));
-    const timeEachPromises = stationIDs.map(st => queries.getTimeEach(st));
+    const maxQueueLength = queries.getMaxQueueLengthInt()
 
     let text = websiteText;
     for (let i = 0; i < stationIDs.length; i++) {
         text += (await stationNamePromises[i]) + "\n"
-        text += "Waiting time: " + ((await queueLengthPromises[i])*(await timeEachPromises[i])) + " minutes\n\n"
+        text += "Slots available: " + (await maxQueueLength - await queueLengthPromises[i]) + "\n\n"
     }
     messenger.send(msg.from.id, text);
 }

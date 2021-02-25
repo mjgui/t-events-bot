@@ -13,9 +13,8 @@ module.exports.storeData = async function (key, data) {
     //because callback has 64 byte limit
     //keyed by messageID
     const statement = `
-		insert into
-			miscellaneous.cache	(key, data, time)
-			values	($1, $2, now());`;
+        insert into miscellaneous.cache (key, data, time)
+        values ($1, $2, now());`;
     const strData = JSON.stringify(data);
     const args = [key, strData];
     await db.query(statement, args);
@@ -24,18 +23,19 @@ module.exports.storeData = async function (key, data) {
 module.exports.updateData = async function (key, data) {
     const strData = JSON.stringify(data);
     const statement = `
-		update miscellaneous.cache
-		set data = $2, time = now()
-		where key = $1;`;
+        update miscellaneous.cache
+        set data = $2,
+            time = now()
+        where key = $1;`;
     const args = [key, strData];
     await db.query(statement, args);
 }
 
 module.exports.getData = async function (key) {
     const statement = `
-		select data
-		from miscellaneous.cache
-		where key = $1;`;
+        select data
+        from miscellaneous.cache
+        where key = $1;`;
     const args = [key];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? JSON.parse(res.rows[0].data) : null;
@@ -43,17 +43,18 @@ module.exports.getData = async function (key) {
 
 module.exports.storeListenerId = async function (listener_id, chat_id) {
     const statement = `
-            update miscellaneous.listeners
-            set listener_ids = array_append(listener_ids, $1)
-            where chat_id = $2`;
+        update miscellaneous.listeners
+        set listener_ids = array_append(listener_ids, $1)
+        where chat_id = $2`;
     const args = [listener_id, chat_id];
     await db.query(statement, args);
 }
 
 module.exports.destroyListenerIds = async function (chat_id) {
     const statement = `
-            select listener_ids from miscellaneous.listeners
-            where chat_id = $1`;
+        select listener_ids
+        from miscellaneous.listeners
+        where chat_id = $1`;
     const args = [chat_id];
     let res = await db.query(statement, args);
     const listenerIds = res.rows[0].listener_ids;
@@ -70,9 +71,9 @@ module.exports.clearOldEntries = async function (schema_name, table_name) {
 
 module.exports.getStationNames = async function () {
     const statement = `
-		select name
-		from master.stations
-		order by name`;
+        select name
+        from master.stations
+        order by name`;
     const args = [];
     const res = await db.query(statement, args);
     const stationNames = res.rows.map(r => r.name.trim()); //somehow can't return this directly?
@@ -85,9 +86,9 @@ module.exports.getStationNames = async function () {
  */
 module.exports.getStationIDs = async function () {
     const statement = `
-		select "stationID"
-		from master.stations
-		order by "stationID"`;
+        select "stationID"
+        from master.stations
+        order by "stationID"`;
     const args = [];
     const res = await db.query(statement, args);
     const stationIDs = res.rows.map(r => r.stationID); //somehow can't return this directly?
@@ -108,8 +109,9 @@ module.exports.getStationIDs = async function () {
 module.exports.getUserStationID = async function (userId) {
     //gets the station a user is queueing for
     const statement = `
-            select "stationID" from master.participants
-            where "userID" = $1`;
+        select "stationID"
+        from master.participants
+        where "userID" = $1`;
     const args = [userId];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].stationID : null;
@@ -118,8 +120,9 @@ module.exports.getUserStationID = async function (userId) {
 const getQueueNumber = async function (userId) {
     //gets the station a user is queueing for
     const statement = `
-            select "queueNumber" from master.participants
-            where "userID" = $1`;
+        select "queueNumber"
+        from master.participants
+        where "userID" = $1`;
     const args = [userId];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].queueNumber : null;
@@ -128,8 +131,9 @@ const getQueueNumber = async function (userId) {
 module.exports.getStationName = async function (stationID) {
     //gets the station a user is queueing for
     const statement = `
-            select name from master.stations
-            where "stationID" = $1`;
+        select name
+        from master.stations
+        where "stationID" = $1`;
     const args = [stationID];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].name.trim() : null;
@@ -137,7 +141,8 @@ module.exports.getStationName = async function (stationID) {
 
 module.exports.getQueueLength = async function (stationID) {
     //gets the station a user is queueing for
-    const statement = `SELECT count(*) AS length FROM stations."` + stationID + `";`;
+    const statement = `SELECT count(*) AS length
+                       FROM stations."` + stationID + `";`;
     const args = [];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? parseInt(res.rows[0].length) : null;
@@ -146,11 +151,12 @@ module.exports.getQueueLength = async function (stationID) {
 const getQueueLengthAhead = async function (stationID, userID) {
     //gets the station a user is queueing for
     const queueNumber = await getQueueNumber(userID);
-    if(queueNumber === null){
+    if (queueNumber === null) {
         return null;
     }
     const statement =
-        `SELECT count(*) AS length FROM stations."` + stationID + `"
+        `SELECT count(*) AS length
+         FROM stations."` + stationID + `"
          WHERE "queueNumber" < ($1);`;
     const args = [queueNumber];
     const res = await db.query(statement, args);
@@ -159,26 +165,19 @@ const getQueueLengthAhead = async function (stationID, userID) {
 
 module.exports.getTimeEach = async function (stationID) {
     const statement = `
-            select "timeEach" from master.stations
-            where "stationID" = $1;`;
+        select "timeEach"
+        from master.stations
+        where "stationID" = $1;`;
     const args = [stationID];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].timeEach : null;
 }
 
-module.exports.getMaxQueueLength = async function (stationID) {
-    const statement = `
-            select "maxQueueLength" from master.stations
-            where "stationID" = $1;`;
-    const args = [stationID];
-    const res = await db.query(statement, args);
-    return (res.rowCount > 0) ? res.rows[0].maxQueueLength : null;
-}
-
 module.exports.getFrontMessage = async function (stationID) {
     const statement = `
-            select "frontMessage" from master.stations
-            where "stationID" = $1;`;
+        select "frontMessage"
+        from master.stations
+        where "stationID" = $1;`;
     const args = [stationID];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].frontMessage : null;
@@ -188,8 +187,7 @@ module.exports.enqueue = async function (userId, stationID) {
     let res;
     try {
         const statement = `
-            insert into
-                stations."` + stationID + `"	("userID")
+            insert into stations."` + stationID + `"	("userID")
                 values	($1)
                 RETURNING "queueNumber";`;
         const args = [userId];
@@ -201,9 +199,8 @@ module.exports.enqueue = async function (userId, stationID) {
     }
     try {
         const statement = `
-            insert into
-                master.participants	("userID", "stationID", "queueNumber")
-                values	($1, $2, $3);`;
+            insert into master.participants ("userID", "stationID", "queueNumber")
+            values ($1, $2, $3);`;
         const args = [userId, stationID, res.rows[0].queueNumber];
         await db.query(statement, args);
     } catch (e) {
@@ -215,12 +212,13 @@ module.exports.enqueue = async function (userId, stationID) {
 
 module.exports.leaveQueue = async function (userId) {
     const stationName = await module.exports.getUserStationID(userId);
-    if(stationName === null){
+    if (stationName === null) {
         return false;
     }
-    try{
+    try {
         const statement = `
-            DELETE FROM stations."` + stationName + `"
+            DELETE
+            FROM stations."` + stationName + `"
             where "userID" = $1`;
         const args = [userId];
         await db.query(statement, args);
@@ -229,9 +227,10 @@ module.exports.leaveQueue = async function (userId) {
         console.log(e);
         return false;
     }
-    try{
+    try {
         const statement = `
-            DELETE FROM master.participants
+            DELETE
+            FROM master.participants
             where "userID" = $1`;
         const args = [userId];
         await db.query(statement, args);
@@ -243,18 +242,19 @@ module.exports.leaveQueue = async function (userId) {
     }
 }
 
-module.exports.getMasterVariable = async function (key){ //returns string
+module.exports.getMasterVariable = async function (key) { //returns string
     const statement = `
-            select "value" from master.variables
-            where "key" = $1;`;
+        select "value"
+        from master.variables
+        where "key" = $1;`;
     const args = [key];
     const res = await db.query(statement, args);
 
-    if(res.rowCount === 0){
+    if (res.rowCount === 0) {
         console.error("Error: master variable " + key + " not found");
         throw new Error("master variable " + key + " not found")
     }
-    if(res.rowCount > 1){
+    if (res.rowCount > 1) {
         console.error("Error: master variable " + key + " matches multiple rows");
         throw new Error("master variable " + key + " matches multiple rows")
     }
@@ -263,30 +263,36 @@ module.exports.getMasterVariable = async function (key){ //returns string
 
 module.exports.setMasterVariable = async function (key, value) {
     const statement = `
-            update master.variables
-            set "value" = $2
-            where "key" = $1`;
+        update master.variables
+        set "value" = $2
+        where "key" = $1`;
     const args = [key, value];
-    const res =  await db.query(statement, args);
+    const res = await db.query(statement, args);
     return res
 }
 
-module.exports.getWaitTime = async function (){ //returns wait time in minutes as a string
+module.exports.getWaitTime = async function () { //returns wait time in minutes as a string
     return await module.exports.getMasterVariable("waitTime");
 }
 
-module.exports.getWaitTimeMessage = async function (){
+module.exports.getWaitTimeMessage = async function () {
     const waitTime = await module.exports.getWaitTime();
     const msg = sprintf(waitTimeMessage, waitTime);
     return msg;
 }
 
-module.exports.setWaitTime = async function (newTime){ //returns wait time in minutes as a string
+module.exports.setWaitTime = async function (newTime) { //returns wait time in minutes as a string
     return await module.exports.setMasterVariable("waitTime", newTime);
 }
 
 module.exports.setMaxQueueLength = async function (newLength) {
     return await module.exports.setMasterVariable("maxLength", newLength);
+}
+
+module.exports.getMaxQueueLengthInt = async function () {
+    const str = await module.exports.getMasterVariable("maxLength");
+    const value = parseInt(str);
+    return value;
 }
 
 //TODO: remove
@@ -322,11 +328,12 @@ module.exports.isAdmin = function (chatId) {
 module.exports.getAdminStationID = async function (groupId) {
     //gets the station an admin group controls
     const statement = `
-            select "stationID" from master.stations
-            where "groupID" = $1`;
+        select "stationID"
+        from master.stations
+        where "groupID" = $1`;
     const args = [groupId];
     const res = await db.query(statement, args);
-    if(res.rows.length > 1){
+    if (res.rows.length > 1) {
         console.warn("Warning: telegram group ID " + groupId + " corresponds to more than one station");
     }
     return (res.rowCount > 0) ? res.rows[0].stationID : null;
@@ -335,8 +342,9 @@ module.exports.getAdminStationID = async function (groupId) {
 module.exports.getGroupId = async function (stationID) {
     //gets the station an admin group controls
     const statement = `
-            select "groupID" from master.stations
-            where "stationID" = $1`;
+        select "groupID"
+        from master.stations
+        where "stationID" = $1`;
     const args = [stationID];
     const res = await db.query(statement, args);
     return (res.rowCount > 0) ? res.rows[0].groupID : null;
@@ -345,7 +353,8 @@ module.exports.getGroupId = async function (stationID) {
 module.exports.getFrontUserId = async function (stationName) {
     //returns userID of the front participant
     const statement =
-        `SELECT "userID" FROM stations."` + stationName + `"
+        `SELECT "userID"
+         FROM stations."` + stationName + `"
          ORDER BY "queueNumber" 
          LIMIT 1;`;
     const args = [];
@@ -356,11 +365,12 @@ module.exports.getFrontUserId = async function (stationName) {
 module.exports.getAllUserId = async function (stationName) {
     //returns userID of the front participant
     const statement =
-        `SELECT "userID" FROM stations."` + stationName + `"
+        `SELECT "userID"
+         FROM stations."` + stationName + `"
          ORDER BY "queueNumber";`;
     const args = [];
     const res = await db.query(statement, args);
-    if(res.rowCount === 0){
+    if (res.rowCount === 0) {
         return null;
     }
     const arr = res.rows.map(r => r.userID);
@@ -387,18 +397,18 @@ module.exports.frontText = async function (groupID) {
 //TODO: update calls to use station ID
 module.exports.setMax = async function (stationID, num) {
     const statement = `
-            update master.stations
-            set "maxQueueLength" = $2
-            where "stationID" = $1`;
+        update master.stations
+        set "maxQueueLength" = $2
+        where "stationID" = $1`;
     const args = [stationID, num];
     await db.query(statement, args);
 }
 
 module.exports.setTimeEach = async function (stationID, num) {
     const statement = `
-            update master.stations
-            set "timeEach" = $2
-            where "stationID" = $1`;
+        update master.stations
+        set "timeEach" = $2
+        where "stationID" = $1`;
     const args = [stationID, num];
     await db.query(statement, args);
 }

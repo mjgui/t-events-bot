@@ -61,6 +61,7 @@ bot.on('message', (msg) => {
         //for participants:
         case '/viewstations':
         case '/stations':
+        case '/timeslots':
             viewStations.init(msg);
             break;
         case '/joinqueue':
