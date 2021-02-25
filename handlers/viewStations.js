@@ -23,8 +23,9 @@ module.exports.init = async function(msg){
 
     let text = websiteText;
     for (let i = 0; i < stationIDs.length; i++) {
+        const slots = Math.max(0, await maxQueueLength - await queueLengthPromises[i])
         text += (await stationNamePromises[i]) + "\n"
-        text += "Slots available: " + (await maxQueueLength - await queueLengthPromises[i]) + "\n\n"
+        text += "Slots available: " + (slots) + "\n\n"
     }
     messenger.send(msg.from.id, text);
 }
