@@ -14,13 +14,18 @@ remove station-based admins
 stored in .env
 ## change max to global
 max queue length per slot
+use this variable to check when enqueueing
 ## changing timeslots to stations
 enable /timeslots as an alias of /stations
+##adapt commands without changing spec
+leavequeue  
+joinqueue  
 
 # potential modifications
 ## change max to global
-use this variable to check when enqueueing
-## changing timeslots to stations
+in joinqueue, only show options that are not full
+## changing stations to timeslots
 hide expired timeslots
 ## /ticket
 prints out a message stating student's timeslot and username
+## queueinfo
