@@ -70,7 +70,6 @@ module.exports.callback = async function (query) {
                 null);
         } else {
             try {
-                const initialQueueLength = await queries.getQueueLength(stationID);
                 await queries.enqueue(query.from.id, stationID);
                 messenger.edit(
                     query.message.chat.id,
