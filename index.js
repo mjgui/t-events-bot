@@ -10,9 +10,6 @@ const getTicket = require('./handlers/getTicket');
 
 const setMax = require('./handlers/setMax');
 const setTime = require('./handlers/setTime');
-const queueInfo = require('./handlers/queueInfo');
-const getFront = require('./handlers/getFront');
-const removeFront = require('./handlers/removeFront');
 const getAll = require('./handlers/getAllParticipants');
 
 let bot;
@@ -84,23 +81,8 @@ bot.on('message', (msg) => {
         case '/settime':
             setTime.init(msg);
             break;
-        case '/queueinfo':
-            queueInfo.init(msg);
-            break;
-        case '/getfront':
-            getFront.init(msg);
-            break;
-        case '/pingfront':
-            //TODO:
-            // automatically ping after remove front
-            break;
-        case '/removefront':
-            removeFront.init(msg);
-            break;
         case '/getall':
             getAll.init(msg);
-            break;
-        case '/messageall':
             break;
         default:
             break;
@@ -117,9 +99,6 @@ bot.on('callback_query', (query) => {
                 break;
             case 'leavequeue':
                 leaveQueue.callback(query);
-                break;
-            case 'remove':
-                removeFront.callback(query);
                 break;
             case 'cancel':
                 cancelCallback(query);
