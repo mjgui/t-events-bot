@@ -17,7 +17,8 @@ module.exports.init = async function (msg) {
             messenger.send(msg.from.id, notQueuedMsg);
             return;
         }
-        const text = await queries.getWaitInfo(stationID, msg.from.id) + "\n\n Are you sure you want to stop queueing?"
+        const stationName = await queries.getStationName(stationID);
+        const text = `You are currently registered for ${stationName}. Are you sure you want to stop queueing?`
         const ik = new InlineKeyboard();
 
         ik.addRow({text: 'Yes, leave the queue', callback_data: JSON.stringify({c: "leavequeue"})});

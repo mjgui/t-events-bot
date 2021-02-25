@@ -218,7 +218,7 @@ module.exports.leaveQueue = async function (userId) {
     try {
         const statement = `
             DELETE
-            FROM stations."` + stationName + `"
+            FROM stations."${stationName}"
             where "userID" = $1`;
         const args = [userId];
         await db.query(statement, args);
