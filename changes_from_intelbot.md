@@ -22,6 +22,7 @@ leavequeue
 joinqueue
 ## /ticket
 prints out a message stating student's timeslot and username
+## remove getfront, pingfront, queueinfo, removefront
 
 # potential modifications
 ## change max to global
@@ -30,4 +31,3 @@ in joinqueue, only show options that are not full
 hide expired timeslots
 ## queueinfo
 show all timeslots and participants in them
-## remove getfront, pingfront, queueinfo
