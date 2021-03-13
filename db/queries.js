@@ -351,7 +351,6 @@ module.exports.getFrontUserId = async function (stationName) {
 }
 
 module.exports.getAllUserId = async function (stationName) {
-    //returns userID of the front participant
     const statement =
         `SELECT "userID"
          FROM stations."` + stationName + `"
