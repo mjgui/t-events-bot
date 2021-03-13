@@ -3,27 +3,20 @@ const messenger = require('../messenger');
 
 // get the telegram handle of the front person
 module.exports.init = async function (msg) {
-    if (msg.from.id === msg.chat.id) {
-        const text = "This command can only be used in an authorized group chat.";
+    const isAdmin = queries.isAdmin(msg.chat.id);
+    if (!isAdmin) {
+        const text = "Error, you are unauthorized";
         messenger.send(msg.chat.id, text);
         return;
     }
-    const station = await queries.getAdminStationID(msg.chat.id);
-    if (station === null) {
-        const text = "This command can only be used in an authorized group chat.";
-        messenger.send(msg.chat.id, text);
-        return;
-    }
-    const userIDs = await queries.getAllUserId(station);
-    if(userIDs === null){
-        messenger.send(msg.chat.id, "There are no participants in the queue.");
-        return;
-    }
-    const promisedUserHandles = userIDs.map(messenger.getUsername)
+    const stationDict = await queries.getAllParticipants();
     // await Promise.all(promisedUsernames);
-    let text = "Username of participants by queue order:";
-    for (let i = 0; i < promisedUserHandles.length; i++) {
-        text += "\n" + (i+1) + '. ' + await promisedUserHandles[i];
+    let text = "List of participants by stations:";
+    for (const [stationName, handles] of Object.entries(stationDict)) {
+        text += `\n\n${stationName}:`
+        for (let i = 0; i < handles.length; i++) {
+            text += `\n${i+1}: ${handles[i]}`;
+        }
     }
     messenger.send(msg.chat.id, text);
 }

@@ -342,7 +342,7 @@ module.exports.getFrontUserId = async function (stationName) {
     //returns userID of the front participant
     const statement =
         `SELECT "userID"
-         FROM stations."` + stationName + `"
+         FROM stations."${stationName}"
          ORDER BY "queueNumber" 
          LIMIT 1;`;
     const args = [];
@@ -350,10 +350,10 @@ module.exports.getFrontUserId = async function (stationName) {
     return (res.rowCount > 0) ? res.rows[0].userID : null;
 }
 
-module.exports.getAllUserId = async function (stationName) {
+module.exports.getAllUserId = async function (stationID) {
     const statement =
         `SELECT "userID"
-         FROM stations."` + stationName + `"
+         FROM stations."${stationID}"
          ORDER BY "queueNumber";`;
     const args = [];
     const res = await db.query(statement, args);
@@ -399,6 +399,36 @@ module.exports.setTimeEach = async function (stationID, num) {
     const args = [stationID, num];
     await db.query(statement, args);
 }
+
+/**
+ *
+ * @param stationID
+ * @returns {Promise<string[]>} array of userhandles
+ */
+module.exports.getStationUserHandles = async function (stationID) {
+    const userIDs = await module.exports.getAllUserId(stationID);
+    if (userIDs === null) {
+        return [];
+    }
+    const promisedUserHandles = userIDs.map(messenger.getUsername);
+    return await Promise.all(promisedUserHandles);
+}
+/**
+ *
+ * @returns {Promise<{string: string[]}>} Returns dictionary of stationName: array of participant handles
+ */
+module.exports.getAllParticipants = async function () {
+    const stationIDs = await module.exports.getStationIDs();
+    const obj = {};
+    for (const stationID of stationIDs) {
+        const stationName = await module.exports.getStationName(stationID);
+        const participants = await module.exports.getStationUserHandles(stationID);
+        obj[stationName] = participants;
+    }
+    return obj;
+}
+
+
 
 // module.exports.getGroupFront = async function (groupID) {
 //     const station = await module.exports.getAdminStation(groupID);
