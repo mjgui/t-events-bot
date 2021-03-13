@@ -25,19 +25,17 @@ module.exports.db_config = {
 
 module.exports.help =`
 For participants:
-/stations - view list of stations and waiting time  
-/joinqueue - select a station to queue for  
-/waittime - check which station you're queueing for and see the waiting time  
-/leavequeue - stop queueing for your current station (confirmation dialogue)  
+/timeslots - view list of timeslots
+/waittime - check the waiting time  
+/joinqueue - select a timeslot to queue for  
+/leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
+/ticket - new command, prints out a message stating participant's timeslot and username  
 
 For stationmasters:
-/queueinfo - (admin) get info on the station's queue
-/setmax - (admin) update the max queue length. Example: \`/setmax 10\`
-/settime - (admin) update the estimated waiting time per participant in minutes. Example: \`/settime 10\`
-/getfront - (admin) get the username of the participant in front
-/removefront - (admin) confirmation dialog to remove participant in front
-/getall - (admin) get the usernames of all participants (slow)`;
-module.exports.about = "This bot was built by @nicktohzyu for Tembusu College's Intelligence Expo";
+/setmax - (admin) update the max queue length per timeslot. Example: \`/setmax 10\`
+/settime - (admin) update the estimated waiting time in minutes. Example: \`/settime 10\`
+/getall - (admin) get the usernames of all participants by timeslot (slow)`;
+module.exports.about = "This bot was built by @nicktohzyu";
 module.exports.start = "Bot started.";
 module.exports.websiteText = ``;
 

@@ -21,34 +21,30 @@ confirmation dialogue
 ### /waitTime
 get expected waiting time for a new participant
 
+### /ticket 
+new command, replies with a message stating participant's timeslot and username
+
 ## for station masters:
-these commands can only be used in an authorized group chat (corresponding to a station)
+these commands can only be by authorized individuals or in authorized chats (set in environment variable "admins")
 
 ### /setMax
 set max number of people in queue
 
-### /queueLength
-get number of persons ahead in the queue
-
-### /getFront
-get telegram handle of person at the front (for stationmasters to message them directly)
-
-### /pingFront
-send ping text to person at the front
-
-### /removeFront
-remove person at front of queue
-message next x persons at the front of queue
-
-### /updateTimePerPerson
-allows group admins to update the expected number of minutes each participant takes
+### /setTime
+set waiting time
 
 ### /getAll
-get all the users queueing
+get all the users registered, organized by timeslot
 
-### /messageAll
-send a message to everyone in the queue
-
+## botfather command setting
+timeslots - view list of timeslots  
+waittime - check the waiting time  
+joinqueue - select a timeslot to queue for  
+leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
+ticket - new command, prints out a message stating participant's timeslot and username  
+setmax - (admin) update the max queue length per timeslot. Example: `/setmax 10`  
+settime - (admin) update the estimated waiting time in minutes. Example: `/settime 10`  
+getall - (admin) get the usernames of all participants by timeslot 
 
 # database:
 ## variables table
