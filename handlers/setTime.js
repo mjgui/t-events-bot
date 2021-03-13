@@ -12,17 +12,21 @@ module.exports.init = async function (msg) {
     try {
         newTime = parseInt(msg.text.split(" ")[1]);
     } catch (e) {
-        const text = "Error, invalid input. This command is used to update the estimated waiting time per participant in minutes." +
-            "\nExample format:\n" +
-            "/settime 5";
-        messenger.send(msg.chat.id, text);
+        sendErrorMsg();
         return;
     }
     if (!Number.isInteger(newTime)) {
-        throw "not a valid integer";
+        sendErrorMsg();
+        return;
     }
     await queries.setWaitTime(newTime);
     const text = "Successfully updated the waiting time.";
     messenger.send(msg.chat.id, text);
 
+    function sendErrorMsg(){
+        const text = "Error, invalid input. This command is used to update the estimated waiting time in minutes." +
+            "\nExample format:\n" +
+            "/settime 5";
+        messenger.send(msg.chat.id, text);
+    }
 }

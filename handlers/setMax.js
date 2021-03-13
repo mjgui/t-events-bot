@@ -11,18 +11,23 @@ module.exports.init = async function (msg) {
         try{
             newLength = parseInt(msg.text.split(" ")[1]);
         } catch (e) {
+            sendErrorMsg();
+            return;
+        }
+        if(!Number.isInteger(newLength)) {
+            sendErrorMsg();
+            return;
+        }
+        await queries.setMaxQueueLength(newLength);
+        const text = "Successfully updated the max queue length per slot.";
+        messenger.send(msg.chat.id, text);
+
+        function sendErrorMsg(){
             const text = "Error, invalid input. This command is used to update the max queue length per slot." +
                 "If it has been reached, participants will not be able to join the queue." +
                 "\nExample format:\n" +
                 "/setmax 10";
             messenger.send(msg.chat.id, text);
-            return;
         }
-        if(!Number.isInteger(newLength)) {
-            throw "not a valid integer";
-        }
-        await queries.setMaxQueueLength(newLength);
-        const text = "Successfully updated the max queue length per slot.";
-        messenger.send(msg.chat.id, text);
     }
 }
