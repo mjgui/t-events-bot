@@ -8,23 +8,22 @@ gives an inline keyboard for participants vs admins, then text instructions
 ## for participants:
 anyone can use these commands, but only via direct message to the bot (those queueing as a group should have one person queue for them)
 
-### /stations
-get a text-only message with the stations and their descriptions, as well as the expected waiting times for each station
+### /timeslots
+get a text-only message with the timeslots and their descriptions
 
 ### /joinQueue
-get an inline keyboard to select the station they want to join
-success message says the number of persons ahead and expected waiting time
+get an inline keyboard to select the timeslot they want to register for
 
 ### /leaveQueue
 confirmation dialogue
 
 ### /waitTime
-get expected waiting time for a new participant
+get the expected waiting time
 
 ### /ticket 
 new command, replies with a message stating participant's timeslot and username
 
-## for station masters:
+## for admins:
 these commands can only be by authorized individuals or in authorized chats (set in environment variable "admins")
 
 ### /setMax
