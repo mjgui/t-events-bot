@@ -35,7 +35,7 @@ module.exports.init = async function (msg) {
         }
         ik.addRow({text: 'Cancel', callback_data: JSON.stringify({c: "cancel"})});
         //TODO: send list of stations and wait time
-        const text = 'Which station will you queue for? By queueing for a station, you agree to share your telegram handle with the test administrators, which they will use to contact you about the test';
+        const text = 'Which timeslot would you like to register for?';
         messenger.send(msg.from.id, text, ik.build());
     } catch (e) {
         console.log(e);
@@ -66,7 +66,7 @@ module.exports.callback = async function (query) {
                 query.message.chat.id,
                 query.message.message_id,
                 null,
-                "Error: the queue for " + stationName + " is too full. Try again later, or queue for another station.",
+                "Error: the queue for " + stationName + " is too full. Try again later, or queue for another timeslot.",
                 null);
         } else {
             try {

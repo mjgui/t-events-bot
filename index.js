@@ -60,8 +60,8 @@ bot.on('message', (msg) => {
         case '/waittime':
             waitTime.init(msg);
             break;
-        case '/viewstations':
-        case '/stations':
+        // case '/viewstations':
+        // case '/stations':
         case '/timeslots':
             viewStations.init(msg);
             break;

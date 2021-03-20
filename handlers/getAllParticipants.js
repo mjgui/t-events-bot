@@ -11,7 +11,7 @@ module.exports.init = async function (msg) {
     }
     const stationDict = await queries.getAllParticipants();
     // await Promise.all(promisedUsernames);
-    let text = "List of participants by stations:";
+    let text = "List of participants by timeslots:";
     for (const [stationName, handles] of Object.entries(stationDict)) {
         text += `\n\n${stationName}:`
         for (let i = 0; i < handles.length; i++) {
