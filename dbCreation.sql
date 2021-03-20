@@ -27,7 +27,11 @@ CREATE SCHEMA master
         "stationID"   bigint  NOT NULL DEFAULT 0
     );
 
-CREATE SCHEMA stations
+CREATE SCHEMA stations;
+
+INSERT INTO master.variables(key, value) VALUES
+('maxLength', 10),
+('waitTime', 5); -- set default values
 
 --     CREATE TABLE stations."" -- put stationID in the blank
 --     (
