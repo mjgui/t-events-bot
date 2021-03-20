@@ -15,7 +15,9 @@ const getAll = require('./handlers/getAllParticipants');
 let bot;
 if (process.env.NODE_ENV === 'production') {
     bot = new TelegramBot(token, {webHook: {port: process.env.PORT}});
-    bot.setWebHook(process.env.HEROKU_URL + bot.token);
+    const url = process.env.HEROKU_URL + bot.token;
+    console.log("Production env, setting webhook as " + url);
+    bot.setWebHook(url);
 } else {
     bot = new TelegramBot(token, {polling: true});
 }
