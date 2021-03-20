@@ -16,3 +16,8 @@ Get info on the queue length and current settings with /queueinfo
 You can update the max queue length and estimated time per participant (in minutes) with /setmax and /settime  
 Get the telegram username of the person at the front with /getfront
 Get the telegram username of everyone in the queue with /getall (this stresses the bot so please don't spam it)
+
+To set up database:  
+Create master schema directly as per sql.  
+Create station tables (representing the timeslots) by adding station name in "" delimiters (follow instruction in comment). Recommended to go by numbers.
+Add stations to master.stations list
