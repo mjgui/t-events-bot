@@ -41,6 +41,8 @@ waittime - check the waiting time
 joinqueue - select a timeslot to queue for  
 leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
 ticket - new command, prints out a message stating participant's timeslot and username  
+about - view information about the bot  
+help - get the list of commands  
 setmax - (admin) update the max queue length per timeslot. Example: `/setmax 10`  
 settime - (admin) update the estimated waiting time in minutes. Example: `/settime 10`  
 getall - (admin) get the usernames of all participants by timeslot 

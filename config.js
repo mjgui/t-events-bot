@@ -24,20 +24,25 @@ module.exports.db_config = {
     ssl: { rejectUnauthorized: false }
 };
 
-module.exports.help =`
-For participants:
+module.exports.help =
+`For participants:
 /timeslots - view list of timeslots
 /waittime - check the waiting time  
 /joinqueue - select a timeslot to queue for  
 /leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
 /ticket - new command, prints out a message stating participant's timeslot and username  
+/about - view information about the bot  
+/help - get the list of commands  
 
 For admins:
 /setmax - (admin) update the max queue length per timeslot. Example: \`/setmax 10\`
 /settime - (admin) update the estimated waiting time in minutes. Example: \`/settime 10\`
 /getall - (admin) get the usernames of all participants by timeslot (slow)`;
-module.exports.about = "This bot was built by @nicktohzyu";
-module.exports.start = "Bot started.";
+module.exports.about =
+`Welcome to Tembusu College's Registration Of New and Novel Interactive Events (RONNIE) bot. To participate in the CSC event, please register for a timeslot and show your /ticket upon arrival.
+
+This bot was built by Tembusian @nicktohzyu`;
+module.exports.start = "Bot started." + "\n\n" + module.exports.about + "\n\n" + module.exports.help;
 module.exports.websiteText = ``;
 
 module.exports.superusers = [653601805] //array of user id

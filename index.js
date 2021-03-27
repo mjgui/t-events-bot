@@ -56,7 +56,7 @@ bot.on('message', (msg) => {
             messenger.send(msg.chat.id, help);
             break;
         case '/start':
-            messenger.send(msg.chat.id, start + "\n" + about);
+            messenger.send(msg.chat.id, start);
             break;
         //for participants:
         case '/waittime':
