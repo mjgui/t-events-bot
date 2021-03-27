@@ -1,6 +1,9 @@
 const pg = require('pg');
 const config = require('../config').db_config;
 
+if (process.env.DATABASE_SSL === 'heroku') {
+    config["ssl"] = {rejectUnauthorized: false};
+}
 const pool = new pg.Pool(config);
 // console.log("Postgres pool created");
 
