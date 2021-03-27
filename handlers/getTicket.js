@@ -17,7 +17,8 @@ module.exports.init = async function (msg) {
         return;
     }
     const stationName = await queries.getStationName(stationID);
+    const firstName = msg.from.first_name
     const username = msg.from.username;
-    const text = `Ticket for @${username}, registered for ${stationName}`
+    const text = `Ticket for ${firstName} (@${username}), registered for ${stationName}`
     messenger.send(msg.from.id, text);
 }
