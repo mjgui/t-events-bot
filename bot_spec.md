@@ -39,7 +39,7 @@ get all the users registered, organized by timeslot
 timeslots - view list of timeslots  
 waittime - check the waiting time  
 joinqueue - select a timeslot to queue for  
-leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
+leavequeue - stop queueing for your current timeslot (with confirmation dialogue)  
 ticket - new command, prints out a message stating participant's timeslot and username  
 about - view information about the bot  
 help - get the list of commands  

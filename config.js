@@ -28,7 +28,7 @@ module.exports.help =
 /timeslots - view list of timeslots
 /waittime - check the waiting time  
 /joinqueue - select a timeslot to queue for  
-/leavequeue - stop queueing for your current timeslots (with confirmation dialogue)  
+/leavequeue - stop queueing for your current timeslot (with confirmation dialogue)  
 /ticket - new command, prints out a message stating participant's timeslot and username  
 /about - view information about the bot  
 /help - get the list of commands  
@@ -40,7 +40,7 @@ For admins:
 module.exports.about =
 `Welcome to Tembusu College's Registration Of New and Novel Interactive Events (RONNIE) bot. To participate in the CSC event, please register for a timeslot and show your /ticket upon arrival.
 
-This bot was built by Tembusian @nicktohzyu`;
+This bot was built by Tembusian Nicholas Toh (@nicktohzyu)`;
 module.exports.start = "Bot started." + "\n\n" + module.exports.about + "\n\n" + module.exports.help;
 module.exports.websiteText = ``;
 
