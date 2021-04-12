@@ -17,22 +17,19 @@ max queue length per slot
 use this variable to check when enqueueing
 ## changing timeslots to stations
 enable /timeslots as an alias of /stations
-##adapt commands without changing spec
-leavequeue  
-joinqueue
+##adapt commands
+leavequeue can be disabled, to disallow people from changing slots
 ## /ticket
 prints out a message stating student's timeslot and username
 ## remove getfront, pingfront, queueinfo, removefront
 ## getAll
-gets participants for all stations
+show all timeslots and participants in them
 
 # potential modifications
 ## change max to global
 in joinqueue, only show options that are not full
 ## changing stations to timeslots
 hide expired timeslots
-## queueinfo
-show all timeslots and participants in them
 ## getCurrent
 requires setting/detecting the current timeslot
 get participants for current timeslot
