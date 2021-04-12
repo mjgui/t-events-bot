@@ -6,6 +6,9 @@ module.exports.api_url = process.env.API_URL + module.exports.token + '/'
 module.exports.bot_name = process.env.BOT_NAME
 module.exports.debug = JSON.parse(process.env.DEBUG)
 module.exports.admins = JSON.parse(process.env.ADMINS) //array of user id
+if(process.env.DISABLE_LEAVE === "true") {
+    module.exports.DISABLE_LEAVE = true;
+}
 
 //testing for heroku env variables
 // console.log("token: ", module.exports.token);

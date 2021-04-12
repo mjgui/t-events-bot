@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const {about, bot_name, debug, help, start, token} = require('./config');
+const {about, bot_name, debug, help, start, token, DISABLE_LEAVE} = require('./config');
 const messenger = require('./messenger');
 // const queries = require('./db/queries');
 const viewStations = require('./handlers/viewStations');
@@ -69,7 +69,11 @@ bot.on('message', (msg) => {
             joinQueue.init(msg);
             break;
         case '/leavequeue':
-            leaveQueue.init(msg);
+            if(DISABLE_LEAVE){
+                messenger.send(msg.chat.id, "Changing time slots is currently disabled by the admins.");
+            } else {
+                leaveQueue.init(msg);
+            }
             break;
         case '/ticket':
             getTicket.init(msg);
@@ -98,7 +102,16 @@ bot.on('callback_query', (query) => {
                 joinQueue.callback(query);
                 break;
             case 'leavequeue':
-                leaveQueue.callback(query);
+                if(DISABLE_LEAVE){
+                    messenger.edit(
+                        query.message.chat.id,
+                        query.message.message_id,
+                        null,
+                        'Changing time slots is currently disabled by the admins.',
+                        null);
+                } else {
+                    leaveQueue.callback(query);
+                }
                 break;
             case 'cancel':
                 cancelCallback(query);
