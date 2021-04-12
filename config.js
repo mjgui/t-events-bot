@@ -1,11 +1,11 @@
 require('dotenv').config()
-module.exports.token = process.env.BOT_TOKEN
+module.exports.BOT_TOKEN = process.env.BOT_TOKEN
 module.exports.server_url = process.env.SERVER_URL //no uses?
-module.exports.api_url = process.env.API_URL + module.exports.token + '/'
+module.exports.api_url = process.env.API_URL + module.exports.BOT_TOKEN + '/'
 // module.exports.secret_url = process.env.SERVER_URL+process.env.BOT_TOKEN
 module.exports.bot_name = process.env.BOT_NAME
 module.exports.debug = JSON.parse(process.env.DEBUG)
-module.exports.admins = JSON.parse(process.env.ADMINS) //array of user id
+module.exports.ADMINS = JSON.parse(process.env.ADMINS) //array of user id
 if(process.env.DISABLE_LEAVE === "true") {
     module.exports.DISABLE_LEAVE = true;
 }
@@ -26,7 +26,7 @@ module.exports.db_config = {
     idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
 };
 
-module.exports.help =
+module.exports.HELP_MSG =
 `For participants:
 /timeslots - view list of timeslots
 /waittime - check the waiting time  
@@ -40,14 +40,14 @@ For admins:
 /setmax - (admin) update the max queue length per timeslot. Example: \`/setmax 10\`
 /settime - (admin) update the estimated waiting time in minutes. Example: \`/settime 10\`
 /getall - (admin) get the usernames of all participants by timeslot (slow)`;
-module.exports.about =
+module.exports.ABOUT_MSG =
 `Welcome to Tembusu College's Registration Of New and Novel Interactive Events (RONNIE) bot. To participate in the CSC event, please register for a timeslot and show your /ticket upon arrival.
 
 This bot was built by Tembusian Nicholas Toh (@nicktohzyu)`;
-module.exports.start = "Bot started." + "\n\n" + module.exports.about + "\n\n" + module.exports.help;
+module.exports.START_MSG = "Bot started." + "\n\n" + module.exports.ABOUT_MSG + "\n\n" + module.exports.HELP_MSG;
 module.exports.websiteText = ``;
 
-module.exports.superusers = [653601805] //array of user id
+module.exports.SUPERUSERS = [653601805] //array of user id
 
 
-module.exports.waitTimeMessage = `The current waiting time is %s minutes`
+module.exports.WAITTIME_MSG = `The current waiting time is %s minutes`

@@ -1,5 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
-const {about, bot_name, debug, help, start, token, DISABLE_LEAVE} = require('./config');
+const config = require('./config');
 const messenger = require('./messenger');
 // const queries = require('./db/queries');
 const viewStations = require('./handlers/viewStations');
@@ -14,18 +14,18 @@ const getAll = require('./handlers/getAllParticipants');
 
 let bot;
 if (process.env.NODE_ENV === 'production') {
-    bot = new TelegramBot(token, {webHook: {port: process.env.PORT}});
+    bot = new TelegramBot(config.BOT_TOKEN, {webHook: {port: process.env.PORT}});
     const url = process.env.HEROKU_URL + bot.token;
     console.log("Production env, setting webhook as " + url);
     bot.setWebHook(url);
 } else {
-    bot = new TelegramBot(token, {polling: true});
+    bot = new TelegramBot(config.BOT_TOKEN, {polling: true});
 }
 
 messenger.initBot(bot);
 
 bot.on('message', (msg) => {
-    if (debug) {
+    if (config.debug) {
         let message = "received message with text \"" + msg.text + "\" from \"" + msg.from.username + "\""
         if (msg.chat.hasOwnProperty("title")) {
             message += " in chat \"" + msg.chat.title + "\"";
@@ -41,7 +41,7 @@ bot.on('message', (msg) => {
     }
     if (msg.text.includes('@')) {
         let tokens = msg.text.split('@');
-        if (tokens[1] !== bot_name) {
+        if (tokens[1] !== config.bot_name) {
             return;
         }
         command = tokens[0];
@@ -50,13 +50,13 @@ bot.on('message', (msg) => {
     }
     switch (command.toLowerCase()) {
         case '/about':
-            messenger.send(msg.chat.id, about);
+            messenger.send(msg.chat.id, config.ABOUT_MSG);
             break;
         case '/help':
-            messenger.send(msg.chat.id, help);
+            messenger.send(msg.chat.id, config.HELP_MSG);
             break;
         case '/start':
-            messenger.send(msg.chat.id, start);
+            messenger.send(msg.chat.id, config.START_MSG);
             break;
         //for participants:
         case '/waittime':
@@ -69,7 +69,7 @@ bot.on('message', (msg) => {
             joinQueue.init(msg);
             break;
         case '/leavequeue':
-            if(DISABLE_LEAVE){
+            if(config.DISABLE_LEAVE){
                 messenger.send(msg.chat.id, "Changing time slots is currently disabled by the admins.");
             } else {
                 leaveQueue.init(msg);
@@ -102,7 +102,7 @@ bot.on('callback_query', (query) => {
                 joinQueue.callback(query);
                 break;
             case 'leavequeue':
-                if(DISABLE_LEAVE){
+                if(config.DISABLE_LEAVE){
                     messenger.edit(
                         query.message.chat.id,
                         query.message.message_id,

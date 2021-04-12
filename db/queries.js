@@ -1,7 +1,7 @@
 const db = require('./db');
 // const assert = require("assert");
 const messenger = require('../messenger');
-const {admins, waitTimeMessage, superusers} = require("../config");
+const config = require("../config");
 const sprintf = require("sprintf-js").sprintf;
 let bot;
 
@@ -277,7 +277,7 @@ module.exports.getWaitTime = async function () { //returns wait time in minutes 
 
 module.exports.getWaitTimeMessage = async function () {
     const waitTime = await module.exports.getWaitTime();
-    const msg = sprintf(waitTimeMessage, waitTime);
+    const msg = sprintf(config.WAITTIME_MSG, waitTime);
     return msg;
 }
 
@@ -301,16 +301,17 @@ module.exports.getMaxQueueLengthInt = async function () {
  * @returns boolean
  */
 module.exports.isSuperuser = function (chatId) {
-    return superusers.includes(chatId);
+    return config.SUPERUSERS.includes(chatId);
 }
 
+// TODO: move out of queries because it does not involve the database
 /**
  *
  * @param chatId int
  * @returns boolean
  */
 module.exports.isAdmin = function (chatId) {
-    return admins.includes(chatId) || isSuperuser(chatId);
+    return config.ADMINS.includes(chatId) || isSuperuser(chatId);
 }
 
 module.exports.getAdminStationID = async function (groupId) {
