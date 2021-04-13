@@ -311,7 +311,7 @@ module.exports.isSuperuser = function (chatId) {
  * @returns boolean
  */
 module.exports.isAdmin = function (chatId) {
-    return config.ADMINS.includes(chatId) || isSuperuser(chatId);
+    return config.ADMINS.includes(chatId) || module.exports.isSuperuser(chatId);
 }
 
 module.exports.getAdminStationID = async function (groupId) {
