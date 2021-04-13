@@ -18,5 +18,6 @@ module.exports.init = async function (msg) {
             text += `\n${i+1}: ${handles[i]}`;
         }
     }
+    // TODO: split into multiple messages if too long
     messenger.send(msg.chat.id, text);
 }

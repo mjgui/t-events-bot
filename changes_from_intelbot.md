@@ -26,6 +26,7 @@ prints out a message stating student's timeslot and username
 show all timeslots and participants in them
 
 # potential modifications
+## get number of sign ups per slot without listing usernames
 ## change max to global
 in joinqueue, only show options that are not full
 ## changing stations to timeslots
